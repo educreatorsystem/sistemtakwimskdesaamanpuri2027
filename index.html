@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#5b4ee8" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Takwim Pintar 2027" />
+  <link rel="apple-touch-icon" href="https://iili.io/nvTovln.md.png" />
+  <link rel="icon" type="image/png" href="https://iili.io/nvTovln.md.png" />
+  <title>Takwim Pintar 2027</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20271027-skdap-selangor-v1" />
+</head>
+<body>
+  <div class="page-orb orb-one" aria-hidden="true"></div>
+  <div class="page-orb orb-two" aria-hidden="true"></div>
+  <div class="page-orb orb-three" aria-hidden="true"></div>
+
+  <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite">
+    <div class="loading-card">
+      <div class="spinner"></div>
+      <div id="loadingText">Memuatkan takwim...</div>
+    </div>
+  </div>
+
+  <header class="site-header print-header">
+    <div class="header-decoration dec-a" aria-hidden="true">✦</div>
+    <div class="header-decoration dec-b" aria-hidden="true">●</div>
+    <div class="brand-wrap">
+      <div class="logo-halo">
+        <img id="schoolLogo" class="school-logo" src="https://iili.io/nvTovln.md.png" alt="Lencana SEKOLAH KEBANGSAAN DESA AMANPURI" />
+      </div>
+      <div class="brand-copy">
+        <div id="schoolName" class="school-name"></div>
+        <h1>TAKWIM PINTAR 2027</h1>
+        <p>Pengurusan Program, Cuti, Perayaan, Emolumen & Takwim Persekolahan</p>
+      </div>
+    </div>
+
+    <div class="header-actions no-print">
+      <button id="holidayScheduleBtn" class="btn btn-holiday" type="button">📋 Jana Ringkasan Bulanan</button>
+      <button id="addProgramBtn" class="btn btn-add-program hidden" type="button">➕ Tambah Program Sekolah</button>
+      <button id="adminBtn" class="btn btn-light" type="button">🔐 Sunting Takwim</button>
+      <button id="printBtn" class="btn btn-light" type="button">🖨️ Cetak Bulan</button>
+      <button id="logoutBtn" class="btn btn-danger hidden" type="button">Log Keluar</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="welcome-strip no-print">
+      <div class="welcome-icon">🌈</div>
+      <div>
+        <strong>Takwim Pintar 2027</strong>
+        <span>Program sekolah, cuti umum, cuti Negeri Selangor, cuti persekolahan KPM, perayaan dan tarikh pembayaran emolumen 2027 dalam satu paparan yang mudah dan ceria.</span>
+      </div>
+    </section>
+
+    <section class="toolbar no-print" aria-label="Navigasi bulan">
+      <button id="prevMonthBtn" class="icon-btn" type="button" aria-label="Bulan sebelumnya">←</button>
+      <div class="month-center">
+        <label for="monthSelect">Pilih bulan</label>
+        <select id="monthSelect"></select>
+      </div>
+      <button id="nextMonthBtn" class="icon-btn" type="button" aria-label="Bulan seterusnya">→</button>
+      <div id="adminBadge" class="admin-badge hidden">● MOD ADMIN AKTIF</div>
+    </section>
+
+    <section class="calendar-card" id="calendarPrintArea">
+      <div class="calendar-heading">
+        <div>
+          <div class="eyebrow">TAKWIM BULANAN • 2027</div>
+          <h2 id="monthTitle">JANUARI 2027</h2>
+        </div>
+        <div class="stat-pills">
+          <div class="stat-pill stat-program"><span id="programCount">0</span><small>Program</small></div>
+          <div class="stat-pill stat-holiday"><span id="holidayCount">0</span><small>Cuti / Perayaan</small></div>
+          <div class="stat-pill stat-off"><span id="holidayDayCount">0</span><small>Tarikh Cuti*</small></div>
+          <div class="stat-pill stat-salary"><span id="emolumenDate">—</span><small>Tarikh Emolumen</small></div>
+        </div>
+      </div>
+
+      <div class="legend" aria-label="Legenda kategori">
+        <span><i class="dot cat-pentadbiran"></i>Pentadbiran</span>
+        <span><i class="dot cat-akademik"></i>Akademik</span>
+        <span><i class="dot cat-hem"></i>HEM</span>
+        <span><i class="dot cat-kokurikulum"></i>Kokurikulum</span>
+        <span><i class="dot cat-sukan"></i>Sukan</span>
+        <span><i class="dot cat-cuti"></i>Program Cuti</span>
+        <span class="legend-separator"></span>
+        <span><i class="dot holiday-public"></i>Cuti Umum</span>
+        <span><i class="dot holiday-state"></i>Cuti Negeri</span>
+        <span><i class="dot holiday-school"></i>Cuti Sekolah</span>
+        <span><i class="dot holiday-festival"></i>Perayaan / Sambutan</span>
+        <span><i class="dot emolumen-dot"></i>Emolumen JANM</span>
+      </div>
+
+      <div class="calendar-scroll">
+        <div class="calendar-grid weekdays" aria-hidden="true">
+          <div>AHAD</div><div>ISNIN</div><div>SELASA</div><div>RABU</div><div>KHAMIS</div><div>JUMAAT</div><div>SABTU</div>
+        </div>
+        <div id="calendarGrid" class="calendar-grid days"></div>
+      </div>
+
+      <div id="emptyMonthMessage" class="empty-message hidden">Tiada program sekolah direkodkan untuk bulan ini. Cuti dan perayaan masih dipaparkan.</div>
+    </section>
+
+    <section class="holiday-summary-card" id="holidaySummarySection">
+      <div class="holiday-summary-head">
+        <div>
+          <div class="eyebrow holiday-eyebrow">RINGKASAN CUTI BULAN INI</div>
+          <h3 id="holidaySummaryTitle">Ringkasan Januari 2027</h3>
+          <p>Ringkasan cuti umum, cuti Negeri Selangor, cuti sekolah dan perayaan bagi bulan yang dipilih.</p>
+        </div>
+        <div class="summary-actions no-print">
+          <button id="addHolidayBtn2" class="btn btn-add-holiday hidden" type="button">➕ Tambah Cuti</button>
+          <button id="holidayScheduleBtn2" class="btn btn-holiday" type="button">📋 Jana Ringkasan</button>
+        </div>
+      </div>
+      <div id="holidaySummaryStats" class="holiday-summary-stats"></div>
+      <div id="holidaySummaryList" class="holiday-summary-list"></div>
+    </section>
+  </main>
+
+
+  <!-- Pilihan Ringkasan Bulanan -->
+  <div id="summaryChoiceModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="summaryChoiceTitle">
+    <div class="modal-backdrop" data-close="summaryChoice"></div>
+    <div class="modal-panel modal-small pop-in summary-choice-panel">
+      <button class="modal-close" type="button" data-close="summaryChoice" aria-label="Tutup">×</button>
+      <div class="modal-icon">📋</div>
+      <h3 id="summaryChoiceTitle">Jana Ringkasan Bulanan</h3>
+      <p class="muted">Pilih jenis ringkasan untuk <strong id="summaryChoiceMonth">bulan semasa</strong>.</p>
+      <div class="summary-choice-options">
+        <button id="summaryHolidayOnlyBtn" class="summary-choice-card holiday" type="button">
+          <span>🎉</span><strong>Ringkasan Cuti</strong><small>Cuti umum, cuti Selangor, cuti sekolah, perayaan dan sambutan.</small>
+        </button>
+        <button id="summaryProgramOnlyBtn" class="summary-choice-card program" type="button">
+          <span>📅</span><strong>Ringkasan Program</strong><small>Semua program sekolah yang direkodkan bagi bulan dipilih.</small>
+        </button>
+        <button id="summaryCombinedBtn" class="summary-choice-card combined" type="button">
+          <span>🗂️</span><strong>Ringkasan Keseluruhan</strong><small>Gabungkan semua cuti dan program mengikut turutan tarikh.</small>
+        </button>
+      </div>
+      <div class="form-actions"><button class="btn btn-secondary" type="button" data-close="summaryChoice">Batal</button></div>
+    </div>
+  </div>
+
+  <!-- Hasil Ringkasan Bulanan -->
+  <div id="summaryResultModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="summaryResultTitle">
+    <div class="modal-backdrop" data-close="summaryResult"></div>
+    <div class="modal-panel holiday-modal-panel pop-in">
+      <button class="modal-close" type="button" data-close="summaryResult" aria-label="Tutup">×</button>
+      <div class="holiday-modal-title-row">
+        <div>
+          <div class="modal-icon">📊</div>
+          <h3 id="summaryResultTitle">Ringkasan Bulanan</h3>
+          <p id="summaryResultSubtitle" class="muted"></p>
+        </div>
+        <div class="holiday-modal-actions no-print">
+          <button id="printSummaryBtn" class="btn btn-primary" type="button">🖨️ Cetak Ringkasan</button>
+        </div>
+      </div>
+      <div id="summaryResultStats" class="generated-summary-stats"></div>
+      <div class="table-wrap">
+        <table class="holiday-table generated-summary-table">
+          <thead id="summaryResultHead"></thead>
+          <tbody id="summaryResultBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lembaran cetak ringkasan -->
+  <section id="summaryPrintSheet" class="holiday-print-sheet" aria-hidden="true">
+    <div class="holiday-print-header">
+      <img id="summaryPrintLogo" alt="Lencana sekolah" />
+      <div><div id="summaryPrintSchool" class="holiday-print-school"></div><h2 id="summaryPrintTitle"></h2><p id="summaryPrintSubtitle"></p></div>
+    </div>
+    <div id="summaryPrintStats" class="print-summary-stats"></div>
+    <table class="holiday-table holiday-table-print generated-summary-table">
+      <thead id="summaryPrintHead"></thead>
+      <tbody id="summaryPrintBody"></tbody>
+    </table>
+  </section>
+
+  <!-- Login Admin -->
+  <div id="loginModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="modal-backdrop" data-close="login"></div>
+    <div class="modal-panel modal-small pop-in">
+      <button class="modal-close" type="button" data-close="login" aria-label="Tutup">×</button>
+      <div class="modal-icon">🔐</div>
+      <h3 id="loginTitle">Log Masuk Admin</h3>
+      <p class="muted">Masukkan ID dan password admin sekolah untuk mengaktifkan fungsi suntingan.</p>
+      <form id="loginForm" class="form-stack">
+        <label>Username Admin<input id="adminIdInput" autocomplete="username" required /></label>
+        <label>Password<input id="adminPasswordInput" type="password" autocomplete="current-password" required /></label>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Log Masuk</button>
+          <button class="btn btn-secondary" type="button" data-close="login">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Pilihan Tambah Pada Tarikh -->
+  <div id="quickAddModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="quickAddTitle">
+    <div class="modal-backdrop" data-close="quickAdd"></div>
+    <div class="modal-panel modal-small pop-in quick-add-panel">
+      <button class="modal-close" type="button" data-close="quickAdd" aria-label="Tutup">×</button>
+      <div class="modal-icon">➕</div>
+      <h3 id="quickAddTitle">Tambah Pada Kalendar</h3>
+      <p class="muted">Tarikh dipilih: <strong id="quickAddDateText">—</strong></p>
+      <div class="quick-add-options">
+        <button id="quickAddProgramBtn" class="quick-add-card program" type="button">
+          <span class="quick-add-icon">📅</span>
+          <strong>Tambah Program</strong>
+          <small>Mesyuarat, aktiviti, program akademik, HEM, kokurikulum dan lain-lain.</small>
+        </button>
+        <button id="quickAddHolidayBtn" class="quick-add-card holiday" type="button">
+          <span class="quick-add-icon">🎊</span>
+          <strong>Tambah Cuti</strong>
+          <small>Cuti sekolah, cuti khas, perayaan atau sambutan tambahan.</small>
+        </button>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-secondary" type="button" data-close="quickAdd">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Program -->
+  <div id="eventModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle">
+    <div class="modal-backdrop" data-close="event"></div>
+    <div class="modal-panel pop-in">
+      <button class="modal-close" type="button" data-close="event" aria-label="Tutup">×</button>
+      <div class="modal-icon">📅</div>
+      <h3 id="eventModalTitle">Maklumat Program</h3>
+      <form id="eventForm" class="form-grid">
+        <input id="eventId" type="hidden" />
+        <label>Tarikh<input id="eventDate" type="date" min="2027-01-01" max="2027-12-31" required /></label>
+        <label>Masa<input id="eventTime" placeholder="Contoh: 8.00 pagi" /></label>
+        <label class="full">Nama Program<input id="eventTitle" required maxlength="180" placeholder="Nama program / aktiviti" /></label>
+        <label class="full">Tempat<input id="eventPlace" maxlength="180" placeholder="Tempat program" /></label>
+        <label>Kategori
+          <select id="eventCategory">
+            <option>Pentadbiran</option><option>Akademik</option><option>HEM</option><option>Kokurikulum</option><option>Sukan</option><option>Cuti</option><option>Lain-lain</option>
+          </select>
+        </label>
+        <label class="full">Catatan<textarea id="eventNotes" rows="3" maxlength="500" placeholder="Catatan tambahan (jika ada)"></textarea></label>
+        <div class="form-actions full" id="eventFormActions">
+          <button id="saveEventBtn" class="btn btn-primary" type="submit">Simpan</button>
+          <button id="deleteEventBtn" class="btn btn-danger hidden" type="button">Padam Program</button>
+          <button class="btn btn-secondary" type="button" data-close="event">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tambah / Sunting Cuti -->
+  <div id="holidayEditModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="holidayEditTitle">
+    <div class="modal-backdrop" data-close="holidayEdit"></div>
+    <div class="modal-panel pop-in">
+      <button class="modal-close" type="button" data-close="holidayEdit" aria-label="Tutup">×</button>
+      <div class="modal-icon">🎊</div>
+      <h3 id="holidayEditTitle">Tambah Cuti</h3>
+      <p class="muted">Cuti yang ditambah di sini akan disimpan ke Google Sheet dan terus dimasukkan dalam kalendar, ringkasan serta jadual cuti bulanan.</p>
+      <form id="holidayEditForm" class="form-grid">
+        <input id="holidayEditId" type="hidden" />
+        <label>Tarikh Mula<input id="holidayStart" type="date" min="2027-01-01" max="2027-12-31" required /></label>
+        <label>Tarikh Akhir<input id="holidayEnd" type="date" min="2027-01-01" max="2027-12-31" required /></label>
+        <label class="full">Nama Cuti / Perayaan<input id="holidayTitle" required maxlength="180" placeholder="Contoh: Cuti Khas Sekolah" /></label>
+        <label>Jenis
+          <select id="holidayType" required>
+            <option>Cuti Umum</option><option>Cuti Negeri</option><option selected>Cuti Sekolah</option><option>Perayaan</option><option>Sambutan</option>
+          </select>
+        </label>
+        <label>Skop<input id="holidayScope" maxlength="120" value="Sekolah Selangor" placeholder="Contoh: Sekolah Selangor" /></label>
+        <label>Ikon
+          <select id="holidayIcon">
+            <option value="🎒">🎒 Cuti Sekolah</option><option value="🎉">🎉 Cuti / Sambutan</option><option value="🇲🇾">🇲🇾 Kebangsaan</option><option value="👑">👑 Negeri</option><option value="🌙">🌙 Islam</option><option value="🕌">🕌 Keagamaan</option><option value="🪔">🪔 Perayaan</option><option value="🎄">🎄 Krismas</option><option value="🏫">🏫 Sekolah</option><option value="🌴">🌴 Cuti Panjang</option>
+          </select>
+        </label>
+        <label class="full">Catatan<textarea id="holidayNotes" rows="3" maxlength="500" placeholder="Catatan tambahan (jika ada)"></textarea></label>
+        <div class="form-actions full">
+          <button id="saveHolidayBtn" class="btn btn-primary" type="submit">Simpan Cuti</button>
+          <button id="deleteHolidayBtn" class="btn btn-danger hidden" type="button">Padam Cuti</button>
+          <button class="btn btn-secondary" type="button" data-close="holidayEdit">Batal</button>
+        </div>
+      </form>
+      <div class="holiday-admin-note">🛡️ Cuti rasmi terbina dalam dikunci. Hanya cuti tambahan admin boleh disunting atau dipadam.</div>
+    </div>
+  </div>
+
+  <!-- Jadual Cuti -->
+  <div id="holidayModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="holidayModalTitle">
+    <div class="modal-backdrop" data-close="holiday"></div>
+    <div class="modal-panel holiday-modal-panel pop-in">
+      <button class="modal-close" type="button" data-close="holiday" aria-label="Tutup">×</button>
+      <div class="holiday-modal-title-row">
+        <div>
+          <div class="modal-icon">🎉</div>
+          <h3 id="holidayModalTitle">Jadual Cuti Bulanan</h3>
+          <p id="holidayModalSubtitle" class="muted"></p>
+        </div>
+        <div class="holiday-modal-actions no-print">
+          <button id="printHolidayBtn" class="btn btn-primary" type="button">🖨️ Cetak Jadual</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="holiday-table">
+          <thead><tr><th>Tarikh</th><th>Hari</th><th>Cuti / Perayaan</th><th>Jenis</th><th>Skop</th><th class="holiday-admin-col no-print">Tindakan</th></tr></thead>
+          <tbody id="holidayTableBody"></tbody>
+        </table>
+      </div>
+      <p class="holiday-disclaimer">* Cuti negeri yang dipaparkan adalah khusus untuk Negeri Selangor. Cuti sekolah adalah berdasarkan Kumpulan B.</p>
+    </div>
+  </div>
+
+  <!-- Lembaran khas untuk cetak jadual cuti -->
+  <section id="holidayPrintSheet" class="holiday-print-sheet" aria-hidden="true">
+    <div class="holiday-print-header">
+      <img id="holidayPrintLogo" alt="Lencana sekolah" />
+      <div><div id="holidayPrintSchool" class="holiday-print-school"></div><h2 id="holidayPrintTitle"></h2><p>Jadual Cuti, Perayaan & Sambutan • Negeri Selangor</p></div>
+    </div>
+    <table class="holiday-table holiday-table-print">
+      <thead><tr><th>Tarikh</th><th>Hari</th><th>Cuti / Perayaan</th><th>Jenis</th><th>Skop</th></tr></thead>
+      <tbody id="holidayPrintBody"></tbody>
+    </table>
+    <p class="holiday-disclaimer">* Jadual ini memfokuskan cuti yang terpakai di Negeri Selangor dan cuti persekolahan KPM Kumpulan B.</p>
+  </section>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+  <script src="app.js?v=20271027-skdap-selangor-v1" defer></script>
+</body>
+</html>
